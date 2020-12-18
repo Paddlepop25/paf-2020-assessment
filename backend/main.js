@@ -187,6 +187,15 @@ app.post('/postForm', upload.single('image'), async (req, res) => {
               .then((result) => {
                 // console.log('insert document to mongoDB ---> ', result) // can log
                 res.status(200)
+                // delete all temporary files
+                res.on('finish', () => {
+                  console.info('response ended. temp images deleted')
+
+                  // delete the temp image files
+                  fs.unlink(req.file.path, () => {
+                    console.info('temp images are DESTROYED')
+                  })
+                })
                 res.type('application/json')
                 res.send({
                   Message: 'inserted document to MongoDB',
@@ -200,15 +209,6 @@ app.post('/postForm', upload.single('image'), async (req, res) => {
                 res.status(500)
                 res.json({ Error: error })
               })
-            // delete all temporary files
-            res.on('finish', () => {
-              console.info('response ended. temp images deleted')
-
-              // delete the temp image files
-              fs.unlink(req.file.path, () => {
-                console.info('temp images are DESTROYED')
-              })
-            })
           })
         })
       } else {
@@ -222,6 +222,8 @@ app.post('/postForm', upload.single('image'), async (req, res) => {
       res.end()
     })
 })
+
+app.use(express.static(__dirname + '/dist/frontend'))
 
 let p0 = startApp(app, pool)
 let p1 = mongoClient.connect()
