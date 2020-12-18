@@ -7,8 +7,12 @@ const app = express()
 
 app.use(morgan('combined'))
 
-
+// test homepage
+// app.get('/', (req, res) => {
+//   res.status(200)
+//   res.json({ Hello: 'Kitty' })
+// })
 
 app.listen(PORT, () => {
-	console.info(`Application started on port ${PORT} at ${new Date()}`)
+  console.info(`Application started on port ${PORT} at ${new Date()}`)
 })
