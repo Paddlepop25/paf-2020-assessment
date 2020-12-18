@@ -162,17 +162,6 @@ app.post('/postForm', upload.single('image'), async (req, res) => {
 
           const doc = mkImage(req.body, req.file.filename)
 
-          // req.file >>>>>  {
-          // 	fieldname: 'image',
-          // 	originalname: 'blob',
-          // 	encoding: '7bit',
-          // 	mimetype: 'image/jpeg',
-          // 	destination: './imagetemp ',
-          // 	filename: '0e0c40fb46bb7fda7cccfff9734aa412',
-          // 	path: 'imagetemp /0e0c40fb46bb7fda7cccfff9734aa412',
-          // 	size: 255962
-          // }
-
           // function to upload image to S3
           s3.putObject(params, (error, result) => {
             if (error) {
