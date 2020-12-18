@@ -174,6 +174,8 @@ app.post('/postForm', upload.single('image'), async (req, res) => {
           s3.putObject(params, (error, result) => {
             if (error) {
               console.error('ERROR in uploading image to S3 >>>>> ', error)
+              res.status(500)
+              res.json('ERROR in uploading image to S3 >>> ', error)
             }
             console.log('result of upload to S3 >>>>> ', result)
 
@@ -198,6 +200,15 @@ app.post('/postForm', upload.single('image'), async (req, res) => {
                 res.status(500)
                 res.json({ Error: error })
               })
+            // delete all temporary files
+            res.on('finish', () => {
+              console.info('response ended. temp images deleted')
+
+              // delete the temp image files
+              fs.unlink(req.file.path, () => {
+                console.info('temp images are DESTROYED')
+              })
+            })
           })
         })
       } else {

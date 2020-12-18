@@ -61,7 +61,8 @@ export class MainComponent implements OnInit {
 		this.authenticateSvc.postToBackend(formData)
 			.then(result => {
 				console.log('post to Backend' ,result)
-				this.form.reset()	
+				this.form.reset()
+				window.alert('Your post has been shared 💌')	
 			})
 			.catch(error => {
 				console.error('Cannot post >>> ', error)
