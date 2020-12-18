@@ -92,21 +92,24 @@ app.use(morgan('combined'))
 const SQL_QUERY_ALL = `SELECT * FROM user where user_id=? and password=?`
 const getAuthentication = makeSQLQuery(SQL_QUERY_ALL, pool)
 
-app.post('/', async (req, res) => {
+app.post('/', (req, res) => {
   let username = req.body['username']
   let password = sha1(req.body['password'])
 
   // console.info(password) // can log hash
 
-  await getAuthentication([username, password])
+  getAuthentication([username, password])
     .then((result) => {
-      console.log('result >>> ', result[0])
-      let sql_userId = result[0].user_id
-      let sql_password = result[0].password
+      console.log('result >>> ', result)
 
-      if (username == sql_userId && password == sql_password) {
-        res.status(200)
-        res.json('You are authenticated!')
+      if (result.length > 0) {
+        let sql_userId = result[0].user_id
+        let sql_password = result[0].password
+
+        if (username == sql_userId && password == sql_password) {
+          res.status(200)
+          res.json('You are authenticated!')
+        }
       } else {
         res.status(401)
         res.json('Please fill in the correct login and password')

@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import {CameraService} from '../camera.service';
-import { CameraImage } from '../models';
 
 @Component({
   selector: 'app-main',
@@ -60,8 +59,9 @@ export class MainComponent implements OnInit {
 
 		this.authenticateSvc.postToBackend(formData)
 			.then(result => {
-				console.log('post to Backend' ,result)
+				console.log('Posted form to backend >>> ' ,result)
 				this.form.reset()
+				this.clear()
 				window.alert('Your post has been shared 💌')	
 			})
 			.catch(error => {

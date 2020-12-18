@@ -17,16 +17,12 @@ export class AuthenticationService {
   constructor(private http: HttpClient) { }
 
   async authenticateLogin(login: Login): Promise<any> {
-    console.log(login)
-    // console.log(login['password'])
+    // console.log(login)
     this.username = login['username'] // can log
     this.password = login['password']
 
     return await this.http.post('http://localhost:3000', login, this.httpOptions)
     .toPromise()
-    .catch((error: HttpErrorResponse) => {
-      console.log('HttpError ---> ', error)
-    })
   }
 
   getUserNameAndPassword() {
@@ -37,8 +33,5 @@ export class AuthenticationService {
     // console.log('form >>> ', form) // empty because it's FormData, normal
     return await this.http.post('http://localhost:3000/postForm', form) // don't need header
       .toPromise()
-      .catch((error: HttpErrorResponse) => {
-        console.log('HttpError ---> ', error)
-      })
   } 
 }

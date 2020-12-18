@@ -26,18 +26,19 @@ export class LoginComponent implements OnInit {
    }
 
    onLogin() {
-     console.log(this.form.value)
+    //  console.log(this.form.value)
      let username = this.form.get('username').value
      let password = this.form.get('password').value
 
      this.authenticateSvc.authenticateLogin({username, password} as Login)
      .then(result => {
-       console.log(result) // 
+       console.log('result >>> ', result) // 
+
        this.router.navigate(['/main'])
      })
      .catch(error => {
         console.error('Cannot login >>> ', error)
-        this.errorMessage = error.message
+        this.errorMessage = error.error
      })
    }
 }
