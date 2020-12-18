@@ -34,7 +34,7 @@ export class AuthenticationService {
   }
 
   async postToBackend(form: FormData): Promise<any> {
-    console.log('form >>> ', form) // empty
+    // console.log('form >>> ', form) // empty because it's FormData, normal
     return await this.http.post('http://localhost:3000/postForm', form) // don't need header
       .toPromise()
       .catch((error: HttpErrorResponse) => {

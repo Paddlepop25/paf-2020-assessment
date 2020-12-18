@@ -60,7 +60,7 @@ export class MainComponent implements OnInit {
 
 		this.authenticateSvc.postToBackend(formData)
 			.then(result => {
-				console.log(result)
+				console.log('post to Backend' ,result)
 				this.form.reset()	
 			})
 			.catch(error => {
