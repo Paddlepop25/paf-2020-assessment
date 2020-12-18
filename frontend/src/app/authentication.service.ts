@@ -18,7 +18,7 @@ export class AuthenticationService {
 
   async authenticateLogin(login: Login): Promise<any> {
     console.log(login)
-    // console.log(login['username'])
+    // console.log(login['password'])
     this.username = login['username'] // can log
     this.password = login['password']
 
@@ -32,9 +32,13 @@ export class AuthenticationService {
   getUserNameAndPassword() {
     return [this.username, this.password]
   }
-}
 
-// result >>>  TextRow {
-//   user_id: 'fred',
-//   password: '31017a722665e4afce586950f42944a6d331dabf'
-// }
+  async postToBackend(form: FormData): Promise<any> {
+    console.log('form >>> ', form) // empty
+    return await this.http.post('http://localhost:3000/postForm', form) // don't need header
+      .toPromise()
+      .catch((error: HttpErrorResponse) => {
+        console.log('HttpError ---> ', error)
+      })
+  } 
+}

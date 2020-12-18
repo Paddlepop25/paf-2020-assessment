@@ -6,6 +6,10 @@ const cors = require('cors')
 const mysql = require('mysql2/promise')
 const bodyParser = require('body-parser')
 const PORT = parseInt(process.argv[2]) || parseInt(process.env.PORT) || 3000
+const sha1 = require('sha1')
+const multer = require('multer')
+
+const upload = multer({ dest: './imagetemp ' }) // select folder
 
 const pool = mysql.createPool({
   host: process.env.MYSQL_SERVER || 'localhost',
@@ -77,7 +81,9 @@ const getAuthentication = makeSQLQuery(SQL_QUERY_ALL, pool)
 app.post('/', async (req, res) => {
   // console.log(req.body) // { username: 'afsd', password: '22' }
   let username = req.body['username'] // { username: 'afsd', password: '22' }
-  let password = req.body['password'] // { username: 'afsd', password: '22' }
+  let password = sha1(req.body['password']) // { username: 'afsd', password: '22' }
+
+  // console.info(password) // can log hash
 
   await getAuthentication([username, password])
     .then((result) => {
@@ -100,10 +106,12 @@ app.post('/', async (req, res) => {
     })
 })
 
-// result TextRow {
-//   user_id: 'barney',
-//   password: '1ee7760a3190c95641442f2be0ef7774e139fb1f'
-// }
+app.post('/postForm', upload.single('image'), (req, res) => {
+  console.log('req.body >>>>> ', req.body) // can log
+  console.log('req.file >>>>> ', req.file) // can log
+
+  // authenticate user again with the pw
+})
 
 let p0 = startApp(app, pool)
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import {CameraService} from '../camera.service';
 import { CameraImage } from '../models';
@@ -16,7 +17,7 @@ export class MainComponent implements OnInit {
 	form: FormGroup
 	imageData
 
-	constructor(private fb: FormBuilder, private cameraSvc: CameraService, private authenticateSvc: AuthenticationService) { }
+	constructor(private fb: FormBuilder, private cameraSvc: CameraService, private authenticateSvc: AuthenticationService, private router: Router) { }
 
 
 	ngOnInit(): void {
@@ -52,9 +53,19 @@ export class MainComponent implements OnInit {
 		formData.set('comments', this.form.get('comments').value)
 		formData.set('username', username)
 		formData.set('password', password)
-		formData.set('image', this.imageData)
+		formData.set('image', this.cameraSvc.getImage().imageData)
 		
-		console.log(formData.get('image')) // can log
-		console.log('formData >>> ', formData)
+		// console.log(formData.get('image')) // can log
+		// console.log('formData >>> ', formData) // will always be empty but can post
+
+		this.authenticateSvc.postToBackend(formData)
+			.then(result => {
+				console.log(result)
+				this.form.reset()	
+			})
+			.catch(error => {
+				console.error('Cannot post >>> ', error)
+				this.router.navigate(['/'])
+			})
 	}
 }
