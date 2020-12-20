@@ -21,7 +21,7 @@ export class AuthenticationService {
     this.username = login['username'] // can log
     this.password = login['password']
 
-    return await this.http.post('http://localhost:3000', login, this.httpOptions)
+    return await this.http.post('/', login, this.httpOptions)
     .toPromise()
   }
 
@@ -31,7 +31,7 @@ export class AuthenticationService {
 
   async postToBackend(form: FormData): Promise<any> {
     // console.log('form >>> ', form) // empty because it's FormData, normal
-    return await this.http.post('http://localhost:3000/postForm', form) // don't need header
+    return await this.http.post('/postForm', form) // don't need header
       .toPromise()
   } 
 }

@@ -112,7 +112,7 @@ app.post('/', (req, res) => {
         }
       } else {
         res.status(401)
-        res.json('Please fill in the correct login and password')
+        res.json('Please fill in the correct username and password') // passes to catch in login component onLogin()
       }
     })
     .catch((error) => {
